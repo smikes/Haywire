@@ -109,6 +109,9 @@ int http_request_on_message_begin(http_parser* parser)
     return 0;
 }
 
+/* TODO(Sam): looks like this would replace URL if called multiple times
+   but! http_parser seems to guarantee called only once
+ */
 int http_request_on_url(http_parser *parser, const char *at, size_t length)
 {
     http_connection* connection = (http_connection*)parser->data;
