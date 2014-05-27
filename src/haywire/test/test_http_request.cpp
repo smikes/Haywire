@@ -42,4 +42,19 @@ TEST_CASE( "http_parser returns URL on simple GET request", "[http_parser][unit]
     free(request.url);
 }
 
+static void thread_main( void * user ) {
+    uv_loop_t * loop = uv_loop_new();
+    REQUIRE(1 == 1);
+    uv_run(loop, UV_RUN_DEFAULT);
+}
+
+
+TEST_CASE("can run uv loop", "[uv][unit]") {
+    uv_thread_t thread1;
+
+    uv_thread_create(&thread1, thread_main, 0);
+
+    uv_thread_join(&thread1);
+}
+
 } /* end anonymous namespace */
