@@ -193,12 +193,17 @@
         ],
 
         'include_dirs': [
-          './include',
           './lib/catch/single_include',
+          './include',
+          './lib/libuv/include',
+          './src/haywire',
+          './src/haywire/test'
         ],
 
         'sources': [
           'src/haywire/test/main.cpp',
+          'src/haywire/test/test_http_parser.cpp',
+          'src/haywire/test/test_http_request.cpp',
         ],
 
       }, # unit tests
