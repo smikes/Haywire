@@ -26,6 +26,10 @@ void hw_free_http_response(hw_http_response* response)
 {
     /* TODO(Sam): make sure body is freed */
     http_response* resp = (http_response*)response;
+
+    free_string(&(resp->body));
+    free_string(&(resp->status_code));
+
     free(resp);
 }
 
