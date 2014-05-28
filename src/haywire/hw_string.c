@@ -20,6 +20,14 @@ void append_string(hw_string* destination, hw_string* source)
     destination->length += source->length;
 }
 
+void free_string(hw_string* str) {
+    if (str->value) {
+        free(str->value);
+        str->value = NULL;
+        str->length = 0;
+    }
+}
+
 /* Added because of http://stackoverflow.com/questions/8359966/strdup-returning-address-out-of-bounds */
 char* dupstr(const char *s)
 {
