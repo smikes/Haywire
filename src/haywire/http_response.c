@@ -24,11 +24,8 @@ hw_http_response hw_create_http_response(http_connection* connection)
 
 void hw_free_http_response(hw_http_response* response)
 {
-    /* TODO(Sam): make sure body is freed */
+    /* TODO(Sam): need to clarify ownership of body, status_code strings */
     http_response* resp = (http_response*)response;
-
-    free_string(&(resp->body));
-    free_string(&(resp->status_code));
 
     free(resp);
 }
