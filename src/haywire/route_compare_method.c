@@ -9,8 +9,6 @@
     #define strtok_r strtok_s
 #endif
 
-static char route_key[2048];
-
 int hw_route_compare_method(char *url, char* route)
 {
     int equal = 0;
@@ -20,9 +18,10 @@ int hw_route_compare_method(char *url, char* route)
     char *request_token_ptr;
     char prefix;
     int match = 0;
-    
-    strcpy(route_key, route);
-    
+    char * route_key;
+
+    route_key = dupstr(route);
+
     route_token = strtok_r(route_key, "/", &route_token_ptr);
     request_token = strtok_r(url, "/", &request_token_ptr);
     
@@ -71,5 +70,8 @@ int hw_route_compare_method(char *url, char* route)
     {
         equal = 0;
     }
+
+    free(route_key);
+
     return equal;
 }
