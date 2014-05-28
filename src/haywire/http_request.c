@@ -267,9 +267,10 @@ void http_request_send_404(http_connection * connection, http_request * request,
     // 404 Not Found.
     hw_write_context* write_context;
     hw_string* response_buffer;
+    http_response * resp = (http_response *)response;
 
     write_context = malloc(sizeof(hw_write_context));
-    write_context->connection = connection;
+    write_context->connection = resp->connection;
     write_context->callback = 0;
 
     get_404_response(request, (http_response*)response);
