@@ -263,32 +263,39 @@ void get_404_response(http_request* request, http_response* response)
     }
 }
 
+void http_request_send_404(http_connection * connection, http_request * request, hw_http_response * response ) {
+    // 404 Not Found.
+    hw_write_context* write_context;
+    hw_string* response_buffer;
+
+    write_context = malloc(sizeof(hw_write_context));
+    write_context->connection = connection;
+    write_context->callback = 0;
+
+    get_404_response(request, (http_response*)response);
+
+    response_buffer = create_response_buffer(response);
+    http_server_write_response(write_context, response_buffer);
+    free(response_buffer);
+    hw_free_http_response(response);
+}
+
 /* TODO(Sam): make sure this happens on appropriate thread */
 int http_request_on_message_complete(http_parser* parser)
 {
     http_connection* connection = (http_connection*)parser->data;
     hw_route_entry* route_entry = get_route_callback(connection->request->url);
-    hw_string* response_buffer;
-    hw_write_context* write_context;
     hw_http_response* response = hw_create_http_response(connection);
-    
+
     if (route_entry != NULL)
     {
         route_entry->callback(connection->request, response, route_entry->user_data);
     }
     else
     {
-        // 404 Not Found.
-        write_context = malloc(sizeof(hw_write_context));
-        write_context->connection = connection;
-        write_context->callback = 0;
-        get_404_response(connection->request, (http_response*)response);
-        response_buffer = create_response_buffer(response);
-        http_server_write_response(write_context, response_buffer);
-        free(response_buffer);
-        hw_free_http_response(response);
+        http_request_send_404(connection, connection->request, response);
     }
-    
+
     free_http_request(connection->request);
     connection->request = NULL;
     return 0;
