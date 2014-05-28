@@ -24,6 +24,7 @@ hw_http_response hw_create_http_response(http_connection* connection)
 
 void hw_free_http_response(hw_http_response* response)
 {
+    /* TODO(Sam): make sure body is freed */
     http_response* resp = (http_response*)response;
     free(resp);
 }
