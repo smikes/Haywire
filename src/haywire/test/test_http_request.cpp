@@ -97,7 +97,7 @@ void work_set(uv_work_t * handle) {
 void after_set(uv_work_t * handle, int status) {
     test_data * d = (test_data *)(handle->data);
     /* should be on uv thread */
-    REQUIRE(d->tUV == uv_thread_self());
+    d->tUV = uv_thread_self();
     REQUIRE(d->tWork != uv_thread_self());
 }
 
