@@ -1,4 +1,4 @@
-#pragma once
+#include "haywire.h"
 
 hw_string* create_string(const char* value);
 void append_string(hw_string* destination, hw_string* source);

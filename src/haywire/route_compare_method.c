@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "route_compare_method.h"
+
+#include "hw_string.h"
 
 #if defined(_WIN32) || defined(_WIN64) 
     #define strcasecmp _stricmp 
