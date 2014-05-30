@@ -72,8 +72,6 @@ void set_sentinel(uv_check_t * handle) {
 
     *(p->sentinel) = 1;
 
-    REQUIRE(uv_has_ref((uv_handle_t *)(p->loop)) == 1);
-
     uv_unref((uv_handle_t *)handle);
 }
 
@@ -91,9 +89,7 @@ static void check_thread_main( void * user ) {
 
     uv_run(p->loop, UV_RUN_NOWAIT);
 
-    REQUIRE(uv_has_ref((uv_handle_t *)(p->loop)) == 1);
     uv_close((uv_handle_t *)(p->check), NULL);
-    REQUIRE(uv_has_ref((uv_handle_t *)(p->loop)) == 1);
 
     uv_run(p->loop, UV_RUN_NOWAIT);
 
