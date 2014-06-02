@@ -237,12 +237,7 @@ void http_stream_on_read(uv_stream_t* tcp, ssize_t nread, const uv_buf_t* buf)
     
     if (nread >= 0)
     {
-        /* TODO(Sam): consider using uv_queue_work to put parsing on separate thread */
-        parsed = http_parser_execute(&connection->parser, &parser_settings, buf->base, nread);
-        if (parsed < nread)
-        {
-            /* uv_close((uv_handle_t*) &client->handle, http_stream_on_close); */
-        }
+        http_request_parse_and_respond(connection, &parser_settings, buf, nread);
     }
     else
     {

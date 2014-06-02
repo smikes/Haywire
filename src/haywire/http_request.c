@@ -284,6 +284,36 @@ void http_request_send_404(http_connection * connection, http_request * request,
 /* TODO(Sam): make sure this happens on appropriate thread */
 int http_request_on_message_complete(http_parser* parser)
 {
+#if ASYNC_PARSE
+#else
+    http_request_after_parse(parser);
+#endif
+}
+
+void async_parse_work() {
+}
+
+void async_parse_after() {
+}
+
+
+int http_request_parse_and_respond(http_connection * connection, http_parser_settings * parser_settings,
+                                   const uv_buf_t * buf, size_t nread) {
+#if ASYNC_PARSE
+#else
+    size_t parsed;
+
+    /* TODO(Sam): consider using uv_queue_work to put parsing on separate thread */
+    parsed = http_parser_execute(&connection->parser, &parser_settings, buf->base, nread);
+    if (parsed < nread)
+    {
+        /* uv_close((uv_handle_t*) &client->handle, http_stream_on_close); */
+    }
+#endif
+}
+
+int http_request_after_parse(http_parser * parser)
+{
     http_connection* connection = (http_connection*)parser->data;
     hw_route_entry* route_entry = get_route_callback(connection->request->url);
     hw_http_response* response = hw_create_http_response(connection);
